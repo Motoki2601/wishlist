@@ -48,11 +48,6 @@ export default function ItemCard({ item, onEdit, onDelete, onTogglePurchased }: 
               {item.price > 0 ? `¥${item.price.toLocaleString()}` : '価格未設定'}
             </p>
             <div className="flex flex-wrap gap-1 mt-2">
-              {item.genre && (
-                <span className="text-xs bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">
-                  {item.genre}
-                </span>
-              )}
               {item.tags.map(t => (
                 <span key={t} className="text-xs bg-fuchsia-50 text-fuchsia-600 px-2 py-0.5 rounded-full">
                   #{t}

@@ -3,7 +3,6 @@ export interface WishItem {
   name: string;
   price: number;
   url: string;
-  genre: string;
   tags: string[];
   rank: number; // 1〜5 (5が最高)
   memo: string;

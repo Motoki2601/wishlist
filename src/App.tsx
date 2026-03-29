@@ -12,20 +12,17 @@ export default function App() {
   const [items, setItems] = useState<WishItem[]>(() => loadItems());
   const [editItem, setEditItem] = useState<WishItem | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('rank');
   const [showPurchased, setShowPurchased] = useState(false);
 
   useEffect(() => saveItems(items), [items]);
 
-  const genres = useMemo(() => [...new Set(items.map(i => i.genre).filter(Boolean))].sort(), [items]);
   const tags = useMemo(() => [...new Set(items.flatMap(i => i.tags))].sort(), [items]);
 
   const filtered = useMemo(() => {
     let list = items;
     if (!showPurchased) list = list.filter(i => !i.purchased);
-    if (selectedGenre) list = list.filter(i => i.genre === selectedGenre);
     if (selectedTag) list = list.filter(i => i.tags.includes(selectedTag));
     return [...list].sort((a, b) => {
       if (sortKey === 'rank') return b.rank - a.rank;
@@ -33,7 +30,7 @@ export default function App() {
       if (sortKey === 'price_desc') return b.price - a.price;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [items, selectedGenre, selectedTag, sortKey, showPurchased]);
+  }, [items, selectedTag, sortKey, showPurchased]);
 
   const openAdd = () => { setEditItem(null); setShowModal(true); };
   const openEdit = (item: WishItem) => { setEditItem(item); setShowModal(true); };
@@ -81,13 +78,10 @@ export default function App() {
         {/* フィルタバー */}
         {items.length > 0 && (
           <FilterBar
-            genres={genres}
             tags={tags}
-            selectedGenre={selectedGenre}
             selectedTag={selectedTag}
             sortKey={sortKey}
             showPurchased={showPurchased}
-            onGenreChange={setSelectedGenre}
             onTagChange={setSelectedTag}
             onSortChange={setSortKey}
             onShowPurchasedChange={setShowPurchased}
@@ -156,7 +150,6 @@ export default function App() {
       {showModal && (
         <ItemModal
           item={editItem}
-          genres={genres}
           onSave={handleSave}
           onClose={closeModal}
         />

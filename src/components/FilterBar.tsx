@@ -1,37 +1,22 @@
 import type { SortKey } from '../types';
 
 interface Props {
-  genres: string[];
   tags: string[];
-  selectedGenre: string;
   selectedTag: string;
   sortKey: SortKey;
   showPurchased: boolean;
-  onGenreChange: (g: string) => void;
   onTagChange: (t: string) => void;
   onSortChange: (s: SortKey) => void;
   onShowPurchasedChange: (v: boolean) => void;
 }
 
 export default function FilterBar({
-  genres, tags, selectedGenre, selectedTag, sortKey, showPurchased,
-  onGenreChange, onTagChange, onSortChange, onShowPurchasedChange,
+  tags, selectedTag, sortKey, showPurchased,
+  onTagChange, onSortChange, onShowPurchasedChange,
 }: Props) {
   return (
     <div className="bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-100 shadow-sm p-3.5">
       <div className="flex flex-wrap gap-2">
-        {/* ジャンルフィルタ */}
-        <select
-          value={selectedGenre}
-          onChange={e => onGenreChange(e.target.value)}
-          className="border border-slate-200 rounded-xl px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 bg-white text-slate-700"
-        >
-          <option value="">すべてのジャンル</option>
-          {genres.map(g => (
-            <option key={g} value={g}>{g}</option>
-          ))}
-        </select>
-
         {/* タグフィルタ */}
         <select
           value={selectedTag}

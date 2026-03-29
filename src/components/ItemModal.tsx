@@ -4,7 +4,6 @@ import type { WishItem } from '../types';
 
 interface Props {
   item?: WishItem | null;
-  genres: string[];
   onSave: (data: Omit<WishItem, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onClose: () => void;
 }
@@ -27,12 +26,10 @@ const RANK_IDLE_COLORS = [
   'border-rose-200 text-rose-400 hover:border-rose-400',
 ];
 
-export default function ItemModal({ item, genres, onSave, onClose }: Props) {
+export default function ItemModal({ item, onSave, onClose }: Props) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [url, setUrl] = useState('');
-  const [genre, setGenre] = useState('');
-  const [newGenre, setNewGenre] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [rank, setRank] = useState(3);
@@ -44,7 +41,6 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
       setName(item.name);
       setPrice(String(item.price));
       setUrl(item.url);
-      setGenre(item.genre);
       setTags(item.tags);
       setRank(item.rank);
       setMemo(item.memo);
@@ -62,13 +58,11 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const finalGenre = newGenre.trim() || genre;
     if (!name.trim()) return;
     onSave({
       name: name.trim(),
       price: parseFloat(price) || 0,
       url: url.trim(),
-      genre: finalGenre.trim(),
       tags,
       rank,
       memo: memo.trim(),
@@ -127,29 +121,6 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="https://..."
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
-            />
-          </div>
-
-          {/* ジャンル */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">ジャンル</label>
-            {genres.length > 0 && (
-              <select
-                value={genre}
-                onChange={e => { setGenre(e.target.value); setNewGenre(''); }}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 mb-2"
-              >
-                <option value="">-- 既存のジャンルを選択 --</option>
-                {genres.map(g => (
-                  <option key={g} value={g}>{g}</option>
-                ))}
-              </select>
-            )}
-            <input
-              value={newGenre}
-              onChange={e => { setNewGenre(e.target.value); setGenre(''); }}
-              placeholder={genres.length > 0 ? '新しいジャンルを入力（任意）' : 'ジャンルを入力'}
               className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
           </div>
