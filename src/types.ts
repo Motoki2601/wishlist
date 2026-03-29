@@ -5,7 +5,7 @@ export interface WishItem {
   url: string;
   genre: string;
   tags: string[];
-  rank: number; // 1〜5 (1が最高)
+  rank: number; // 1〜5 (5が最高)
   memo: string;
   purchased: boolean;
   createdAt: string;

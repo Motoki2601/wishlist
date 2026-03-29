@@ -28,7 +28,7 @@ export default function App() {
     if (selectedGenre) list = list.filter(i => i.genre === selectedGenre);
     if (selectedTag) list = list.filter(i => i.tags.includes(selectedTag));
     return [...list].sort((a, b) => {
-      if (sortKey === 'rank') return a.rank - b.rank;
+      if (sortKey === 'rank') return b.rank - a.rank;
       if (sortKey === 'price_asc') return a.price - b.price;
       if (sortKey === 'price_desc') return b.price - a.price;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -69,11 +69,11 @@ export default function App() {
     .reduce((sum, i) => sum + i.price, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
+    <div className="min-h-screen bg-gradient-to-b from-violet-50/60 via-white to-fuchsia-50/30">
       {/* ヘッダー */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-40">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-violet-100/60 sticky top-0 z-40">
         <div className="max-w-2xl mx-auto px-5 py-4">
-          <h1 className="text-lg font-bold tracking-tight text-slate-800">🎁 欲しいものリスト</h1>
+          <h1 className="text-lg font-bold tracking-tight text-violet-900">✦ 欲しいものリスト</h1>
         </div>
       </header>
 
@@ -101,7 +101,7 @@ export default function App() {
               <>
                 <p className="text-5xl mb-4">🛍️</p>
                 <p className="font-medium text-slate-500">まだ何もありません</p>
-                <p className="text-sm mt-1">下の「追加」ボタンで登録しましょう</p>
+                <p className="text-sm mt-1 text-violet-400">下の「追加」ボタンで登録しましょう</p>
               </>
             ) : (
               <>
@@ -128,14 +128,14 @@ export default function App() {
       {/* ボトムバー */}
       <div className="fixed bottom-0 left-0 right-0 z-40">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white/90 backdrop-blur-md border-t border-slate-100 shadow-[0_-4px_24px_rgba(0,0,0,0.07)] px-5 py-3 flex items-center justify-between gap-4">
+          <div className="bg-white/90 backdrop-blur-md border-t border-violet-100/60 shadow-[0_-4px_24px_rgba(109,40,217,0.08)] px-5 py-3 flex items-center justify-between gap-4">
             {/* 件数・合計 */}
             <div>
               <p className="text-xs text-slate-400 leading-none mb-0.5">リスト</p>
               <p className="text-sm font-semibold text-slate-700">
                 {filtered.length}件
                 {totalPrice > 0 && (
-                  <span className="text-blue-600 ml-2">¥{totalPrice.toLocaleString()}</span>
+                  <span className="text-violet-600 ml-2">¥{totalPrice.toLocaleString()}</span>
                 )}
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function App() {
             {/* 追加ボタン */}
             <button
               onClick={openAdd}
-              className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 active:scale-95 text-white px-6 py-2.5 rounded-2xl text-sm font-semibold shadow-md shadow-blue-200 transition-all"
+              className="flex items-center gap-2 bg-violet-500 hover:bg-violet-600 active:scale-95 text-white px-6 py-2.5 rounded-2xl text-sm font-semibold shadow-md shadow-violet-200 transition-all"
             >
               <Plus size={17} strokeWidth={2.5} />
               追加

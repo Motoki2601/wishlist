@@ -11,11 +11,11 @@ interface Props {
 
 const RANK_COLORS = [
   '',
-  'bg-gradient-to-br from-rose-500 to-orange-400',   // ★1: 赤→オレンジ（最高優先）
-  'bg-gradient-to-br from-orange-400 to-amber-300',  // ★2: オレンジ→アンバー
+  'bg-gradient-to-br from-slate-400 to-slate-300',   // ★1: スレート（最低優先）
+  'bg-gradient-to-br from-sky-400 to-cyan-300',      // ★2: 空→シアン
   'bg-gradient-to-br from-lime-400 to-emerald-400',  // ★3: 黄緑→緑（中間）
-  'bg-gradient-to-br from-sky-400 to-cyan-300',      // ★4: 空→シアン
-  'bg-gradient-to-br from-slate-400 to-slate-300',   // ★5: スレート（最低優先）
+  'bg-gradient-to-br from-amber-400 to-orange-300',  // ★4: アンバー→オレンジ
+  'bg-gradient-to-br from-rose-500 to-pink-400',     // ★5: 赤→ピンク（最高優先）
 ];
 const RANK_LABELS = ['', '★1', '★2', '★3', '★4', '★5'];
 
@@ -44,17 +44,17 @@ export default function ItemCard({ item, onEdit, onDelete, onTogglePurchased }: 
             <p className={`font-semibold text-gray-800 truncate ${item.purchased ? 'line-through' : ''}`}>
               {item.name}
             </p>
-            <p className="text-blue-600 font-bold text-sm mt-0.5">
+            <p className="text-violet-600 font-bold text-sm mt-0.5">
               {item.price > 0 ? `¥${item.price.toLocaleString()}` : '価格未設定'}
             </p>
             <div className="flex flex-wrap gap-1 mt-2">
               {item.genre && (
-                <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">
                   {item.genre}
                 </span>
               )}
               {item.tags.map(t => (
-                <span key={t} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
+                <span key={t} className="text-xs bg-fuchsia-50 text-fuchsia-600 px-2 py-0.5 rounded-full">
                   #{t}
                 </span>
               ))}
@@ -68,20 +68,20 @@ export default function ItemCard({ item, onEdit, onDelete, onTogglePurchased }: 
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg"
+                className="p-1.5 text-slate-400 hover:text-violet-500 hover:bg-violet-50 rounded-lg"
               >
                 <ExternalLink size={16} />
               </a>
             )}
             <button
               onClick={() => onEdit(item)}
-              className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg"
+              className="p-1.5 text-slate-400 hover:text-violet-600 hover:bg-violet-50 rounded-lg"
             >
               <Pencil size={16} />
             </button>
             <button
               onClick={() => onDelete(item.id)}
-              className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg"
+              className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg"
             >
               <Trash2 size={16} />
             </button>
@@ -126,7 +126,7 @@ export default function ItemCard({ item, onEdit, onDelete, onTogglePurchased }: 
                 type="checkbox"
                 checked={item.purchased}
                 onChange={() => onTogglePurchased(item.id)}
-                className="w-3.5 h-3.5 accent-blue-500"
+                className="w-3.5 h-3.5 accent-violet-500"
               />
               <span className="text-xs text-gray-600">購入済み</span>
             </label>

@@ -10,6 +10,22 @@ interface Props {
 }
 
 const RANKS = [1, 2, 3, 4, 5];
+const RANK_ACTIVE_COLORS = [
+  '',
+  'bg-gradient-to-br from-slate-400 to-slate-300 border-slate-400 text-white',
+  'bg-gradient-to-br from-sky-400 to-cyan-300 border-sky-400 text-white',
+  'bg-gradient-to-br from-lime-400 to-emerald-400 border-lime-400 text-white',
+  'bg-gradient-to-br from-amber-400 to-orange-300 border-amber-400 text-white',
+  'bg-gradient-to-br from-rose-500 to-pink-400 border-rose-500 text-white',
+];
+const RANK_IDLE_COLORS = [
+  '',
+  'border-slate-300 text-slate-400 hover:border-slate-400',
+  'border-sky-200 text-sky-400 hover:border-sky-400',
+  'border-lime-200 text-lime-500 hover:border-lime-400',
+  'border-amber-200 text-amber-500 hover:border-amber-400',
+  'border-rose-200 text-rose-400 hover:border-rose-400',
+];
 
 export default function ItemModal({ item, genres, onSave, onClose }: Props) {
   const [name, setName] = useState('');
@@ -67,7 +83,7 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
     >
       <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg max-h-[90vh] overflow-y-auto shadow-xl">
         <div className="flex items-center justify-between px-5 py-4 border-b sticky top-0 bg-white">
-          <h2 className="text-lg font-semibold text-gray-800">
+          <h2 className="text-lg font-semibold text-violet-900">
             {item ? 'アイテムを編集' : 'アイテムを追加'}
           </h2>
           <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100">
@@ -78,7 +94,7 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {/* 名前 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               名前 <span className="text-red-500">*</span>
             </label>
             <input
@@ -86,43 +102,43 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="例: Sony WH-1000XM5"
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
           </div>
 
           {/* 値段 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">値段（円）</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">値段（円）</label>
             <input
               type="number"
               min="0"
               value={price}
               onChange={e => setPrice(e.target.value)}
               placeholder="例: 39800"
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
           </div>
 
           {/* URL */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">URL</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">URL</label>
             <input
               type="url"
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="https://..."
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
           </div>
 
           {/* ジャンル */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ジャンル</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">ジャンル</label>
             {genres.length > 0 && (
               <select
                 value={genre}
                 onChange={e => { setGenre(e.target.value); setNewGenre(''); }}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 mb-2"
+                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 mb-2"
               >
                 <option value="">-- 既存のジャンルを選択 --</option>
                 {genres.map(g => (
@@ -134,25 +150,25 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
               value={newGenre}
               onChange={e => { setNewGenre(e.target.value); setGenre(''); }}
               placeholder={genres.length > 0 ? '新しいジャンルを入力（任意）' : 'ジャンルを入力'}
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
           </div>
 
           {/* タグ */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">タグ</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">タグ</label>
             <div className="flex gap-2">
               <input
                 value={tagInput}
                 onChange={e => setTagInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
                 placeholder="タグを入力してEnter"
-                className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
               />
               <button
                 type="button"
                 onClick={addTag}
-                className="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 text-sm"
+                className="px-3 py-2 bg-violet-50 text-violet-600 rounded-lg hover:bg-violet-100 text-sm"
               >
                 <Plus size={16} />
               </button>
@@ -160,7 +176,7 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
                 {tags.map(t => (
-                  <span key={t} className="flex items-center gap-1 bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">
+                  <span key={t} className="flex items-center gap-1 bg-violet-100 text-violet-700 text-xs px-2 py-1 rounded-full">
                     {t}
                     <button type="button" onClick={() => removeTag(t)} className="hover:text-red-500">
                       <X size={12} />
@@ -173,8 +189,8 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
 
           {/* ランキング */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              優先度（1=最高）
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              優先度 <span className="text-xs font-normal text-slate-400 ml-1">★5が最高優先</span>
             </label>
             <div className="flex gap-2">
               {RANKS.map(r => (
@@ -182,10 +198,10 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
                   key={r}
                   type="button"
                   onClick={() => setRank(r)}
-                  className={`w-10 h-10 rounded-full text-sm font-bold border-2 transition-colors ${
+                  className={`w-10 h-10 rounded-full text-sm font-bold border-2 transition-all ${
                     rank === r
-                      ? 'bg-blue-500 border-blue-500 text-white'
-                      : 'border-gray-300 text-gray-500 hover:border-blue-300'
+                      ? RANK_ACTIVE_COLORS[r]
+                      : RANK_IDLE_COLORS[r]
                   }`}
                 >
                   {r}
@@ -196,13 +212,13 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
 
           {/* メモ */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">メモ</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">メモ</label>
             <textarea
               value={memo}
               onChange={e => setMemo(e.target.value)}
               rows={3}
               placeholder="気になる点、比較メモなど..."
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
             />
           </div>
 
@@ -212,7 +228,7 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
               type="checkbox"
               checked={purchased}
               onChange={e => setPurchased(e.target.checked)}
-              className="w-4 h-4 rounded accent-blue-500"
+              className="w-4 h-4 rounded accent-violet-500"
             />
             <span className="text-sm text-gray-700">購入済みにする</span>
           </label>
@@ -228,7 +244,7 @@ export default function ItemModal({ item, genres, onSave, onClose }: Props) {
             </button>
             <button
               type="submit"
-              className="flex-1 py-2.5 bg-blue-500 text-white rounded-xl text-sm font-medium hover:bg-blue-600"
+              className="flex-1 py-2.5 bg-violet-500 text-white rounded-xl text-sm font-medium hover:bg-violet-600"
             >
               {item ? '保存' : '追加'}
             </button>
