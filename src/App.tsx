@@ -150,6 +150,7 @@ export default function App() {
       {showModal && (
         <ItemModal
           item={editItem}
+          existingTags={tags}
           onSave={handleSave}
           onClose={closeModal}
         />

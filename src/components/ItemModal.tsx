@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { X, Plus } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
 import type { WishItem } from '../types';
 
 interface Props {
   item?: WishItem | null;
+  existingTags?: string[];
   onSave: (data: Omit<WishItem, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onClose: () => void;
 }
@@ -26,7 +27,7 @@ const RANK_IDLE_COLORS = [
   'border-rose-200 text-rose-400 hover:border-rose-400',
 ];
 
-export default function ItemModal({ item, onSave, onClose }: Props) {
+export default function ItemModal({ item, existingTags = [], onSave, onClose }: Props) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [url, setUrl] = useState('');
@@ -35,6 +36,8 @@ export default function ItemModal({ item, onSave, onClose }: Props) {
   const [rank, setRank] = useState(3);
   const [memo, setMemo] = useState('');
   const [purchased, setPurchased] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const tagInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (item) {
@@ -48,10 +51,15 @@ export default function ItemModal({ item, onSave, onClose }: Props) {
     }
   }, [item]);
 
-  const addTag = () => {
-    const t = tagInput.trim();
+  const suggestions = existingTags.filter(
+    t => !tags.includes(t) && t.toLowerCase().includes(tagInput.trim().toLowerCase())
+  );
+
+  const addTag = (value?: string) => {
+    const t = (value ?? tagInput).trim();
     if (t && !tags.includes(t)) setTags([...tags, t]);
     setTagInput('');
+    setShowSuggestions(false);
   };
 
   const removeTag = (t: string) => setTags(tags.filter(x => x !== t));
@@ -128,24 +136,9 @@ export default function ItemModal({ item, onSave, onClose }: Props) {
           {/* タグ */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">タグ</label>
-            <div className="flex gap-2">
-              <input
-                value={tagInput}
-                onChange={e => setTagInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                placeholder="タグを入力してEnter"
-                className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
-              />
-              <button
-                type="button"
-                onClick={addTag}
-                className="px-3 py-2 bg-violet-50 text-violet-600 rounded-lg hover:bg-violet-100 text-sm"
-              >
-                <Plus size={16} />
-              </button>
-            </div>
+            {/* 付与済みタグ */}
             {tags.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-2">
+              <div className="flex flex-wrap gap-1 mb-2">
                 {tags.map(t => (
                   <span key={t} className="flex items-center gap-1 bg-violet-100 text-violet-700 text-xs px-2 py-1 rounded-full">
                     {t}
@@ -156,6 +149,55 @@ export default function ItemModal({ item, onSave, onClose }: Props) {
                 ))}
               </div>
             )}
+            <div className="relative">
+              <input
+                ref={tagInputRef}
+                value={tagInput}
+                onChange={e => { setTagInput(e.target.value); setShowSuggestions(true); }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') { e.preventDefault(); addTag(); }
+                  if (e.key === 'Escape') setShowSuggestions(false);
+                }}
+                placeholder="タグを入力またはタップして候補を選択"
+                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+              />
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute z-10 left-0 right-0 top-full mt-1 bg-white border border-violet-100 rounded-xl shadow-lg overflow-hidden">
+                  {suggestions.map(t => (
+                    <button
+                      key={t}
+                      type="button"
+                      onMouseDown={() => addTag(t)}
+                      className="w-full text-left px-3 py-2 text-sm text-violet-700 hover:bg-violet-50 flex items-center gap-2"
+                    >
+                      <span className="text-violet-400 text-xs">#</span>{t}
+                    </button>
+                  ))}
+                  {tagInput.trim() && !existingTags.includes(tagInput.trim()) && !tags.includes(tagInput.trim()) && (
+                    <button
+                      type="button"
+                      onMouseDown={() => addTag()}
+                      className="w-full text-left px-3 py-2 text-sm text-slate-500 hover:bg-slate-50 border-t border-slate-100 flex items-center gap-2"
+                    >
+                      <span className="text-slate-400 text-xs">+</span>「{tagInput.trim()}」を新規追加
+                    </button>
+                  )}
+                </div>
+              )}
+              {showSuggestions && suggestions.length === 0 && tagInput.trim() && !tags.includes(tagInput.trim()) && (
+                <div className="absolute z-10 left-0 right-0 top-full mt-1 bg-white border border-violet-100 rounded-xl shadow-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onMouseDown={() => addTag()}
+                    className="w-full text-left px-3 py-2 text-sm text-slate-500 hover:bg-slate-50 flex items-center gap-2"
+                  >
+                    <span className="text-slate-400 text-xs">+</span>「{tagInput.trim()}」を新規追加
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* ランキング */}
