@@ -9,7 +9,14 @@ interface Props {
   onTogglePurchased: (id: string) => void;
 }
 
-const RANK_COLORS = ['', 'bg-amber-400', 'bg-blue-400', 'bg-green-400', 'bg-gray-300', 'bg-gray-200'];
+const RANK_COLORS = [
+  '',
+  'bg-gradient-to-br from-rose-500 to-orange-400',   // ★1: 赤→オレンジ（最高優先）
+  'bg-gradient-to-br from-orange-400 to-amber-300',  // ★2: オレンジ→アンバー
+  'bg-gradient-to-br from-lime-400 to-emerald-400',  // ★3: 黄緑→緑（中間）
+  'bg-gradient-to-br from-sky-400 to-cyan-300',      // ★4: 空→シアン
+  'bg-gradient-to-br from-slate-400 to-slate-300',   // ★5: スレート（最低優先）
+];
 const RANK_LABELS = ['', '★1', '★2', '★3', '★4', '★5'];
 
 export default function ItemCard({ item, onEdit, onDelete, onTogglePurchased }: Props) {
