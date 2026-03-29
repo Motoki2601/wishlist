@@ -17,8 +17,8 @@ export default function ItemCard({ item, onEdit, onDelete, onTogglePurchased }: 
 
   return (
     <div
-      className={`bg-white rounded-2xl shadow-sm border transition-opacity ${
-        item.purchased ? 'opacity-50' : ''
+      className={`bg-white rounded-2xl shadow-sm border border-slate-100 transition-opacity ${
+        item.purchased ? 'opacity-40' : ''
       }`}
     >
       <div className="p-4">

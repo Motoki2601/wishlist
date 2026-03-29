@@ -69,28 +69,15 @@ export default function App() {
     .reduce((sum, i) => sum + i.price, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
       {/* ヘッダー */}
-      <header className="bg-white border-b sticky top-0 z-40 shadow-sm">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-gray-800">🎁 欲しいものリスト</h1>
-            <p className="text-xs text-gray-400 mt-0.5">
-              {filtered.length}件
-              {totalPrice > 0 && ` · 合計 ¥${totalPrice.toLocaleString()}`}
-            </p>
-          </div>
-          <button
-            onClick={openAdd}
-            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition-colors"
-          >
-            <Plus size={16} />
-            追加
-          </button>
+      <header className="bg-white/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-40">
+        <div className="max-w-2xl mx-auto px-5 py-4">
+          <h1 className="text-lg font-bold tracking-tight text-slate-800">🎁 欲しいものリスト</h1>
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-5 space-y-4">
+      <main className="max-w-2xl mx-auto px-4 pt-5 pb-28 space-y-4">
         {/* フィルタバー */}
         {items.length > 0 && (
           <FilterBar
@@ -109,17 +96,17 @@ export default function App() {
 
         {/* アイテム一覧 */}
         {filtered.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
+          <div className="text-center py-24 text-slate-400">
             {items.length === 0 ? (
               <>
                 <p className="text-5xl mb-4">🛍️</p>
-                <p className="font-medium">まだ何もありません</p>
-                <p className="text-sm mt-1">「追加」ボタンで登録しましょう</p>
+                <p className="font-medium text-slate-500">まだ何もありません</p>
+                <p className="text-sm mt-1">下の「追加」ボタンで登録しましょう</p>
               </>
             ) : (
               <>
                 <p className="text-4xl mb-4">🔍</p>
-                <p className="font-medium">条件に一致するアイテムがありません</p>
+                <p className="font-medium text-slate-500">条件に一致するアイテムがありません</p>
               </>
             )}
           </div>
@@ -137,6 +124,33 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* ボトムバー */}
+      <div className="fixed bottom-0 left-0 right-0 z-40">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white/90 backdrop-blur-md border-t border-slate-100 shadow-[0_-4px_24px_rgba(0,0,0,0.07)] px-5 py-3 flex items-center justify-between gap-4">
+            {/* 件数・合計 */}
+            <div>
+              <p className="text-xs text-slate-400 leading-none mb-0.5">リスト</p>
+              <p className="text-sm font-semibold text-slate-700">
+                {filtered.length}件
+                {totalPrice > 0 && (
+                  <span className="text-blue-600 ml-2">¥{totalPrice.toLocaleString()}</span>
+                )}
+              </p>
+            </div>
+
+            {/* 追加ボタン */}
+            <button
+              onClick={openAdd}
+              className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 active:scale-95 text-white px-6 py-2.5 rounded-2xl text-sm font-semibold shadow-md shadow-blue-200 transition-all"
+            >
+              <Plus size={17} strokeWidth={2.5} />
+              追加
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* モーダル */}
       {showModal && (
